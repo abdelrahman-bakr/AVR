@@ -1,0 +1,372 @@
+
+EEPROM_24AA08.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000220  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000274  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000274  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002a4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000108  00000000  00000000  000002e0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000f2c  00000000  00000000  000003e8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000954  00000000  00000000  00001314  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000088b  00000000  00000000  00001c68  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000204  00000000  00000000  000024f4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000005f6  00000000  00000000  000026f8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000056a  00000000  00000000  00002cee  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 000000d8  00000000  00000000  00003258  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 b6 00 	call	0x16c	; 0x16c <main>
+  64:	0c 94 0e 01 	jmp	0x21c	; 0x21c <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <I2C_Slave_Init>:
+	}
+	if(status==0xC8)		/* Last byte transmitted with ack received */
+	return -3;			/* If yes then return -3 */
+	else			/* else return -4 */
+	return -4;
+}
+  6c:	82 b9       	out	0x02, r24	; 2
+  6e:	84 ec       	ldi	r24, 0xC4	; 196
+  70:	86 bf       	out	0x36, r24	; 54
+  72:	08 95       	ret
+
+00000074 <I2C_Slave_Listen>:
+  74:	06 b6       	in	r0, 0x36	; 54
+  76:	07 fe       	sbrs	r0, 7
+  78:	fd cf       	rjmp	.-6      	; 0x74 <I2C_Slave_Listen>
+  7a:	81 b1       	in	r24, 0x01	; 1
+  7c:	98 2f       	mov	r25, r24
+  7e:	98 7f       	andi	r25, 0xF8	; 248
+  80:	80 7f       	andi	r24, 0xF0	; 240
+  82:	80 36       	cpi	r24, 0x60	; 96
+  84:	41 f0       	breq	.+16     	; 0x96 <I2C_Slave_Listen+0x22>
+  86:	98 3a       	cpi	r25, 0xA8	; 168
+  88:	41 f0       	breq	.+16     	; 0x9a <I2C_Slave_Listen+0x26>
+  8a:	90 3b       	cpi	r25, 0xB0	; 176
+  8c:	41 f0       	breq	.+16     	; 0x9e <I2C_Slave_Listen+0x2a>
+  8e:	80 37       	cpi	r24, 0x70	; 112
+  90:	89 f7       	brne	.-30     	; 0x74 <I2C_Slave_Listen>
+  92:	82 e0       	ldi	r24, 0x02	; 2
+  94:	08 95       	ret
+  96:	80 e0       	ldi	r24, 0x00	; 0
+  98:	08 95       	ret
+  9a:	81 e0       	ldi	r24, 0x01	; 1
+  9c:	08 95       	ret
+  9e:	81 e0       	ldi	r24, 0x01	; 1
+  a0:	08 95       	ret
+
+000000a2 <I2C_Slave_Receive>:
+
+char I2C_Slave_Receive()
+{
+	uint8_t status;		/* Declare variable */
+	TWCR=(1<<TWEN)|(1<<TWEA)|(1<<TWINT);/* Enable TWI & generation of ack */
+  a2:	84 ec       	ldi	r24, 0xC4	; 196
+  a4:	86 bf       	out	0x36, r24	; 54
+	while(!(TWCR&(1<<TWINT)));	/* Wait until TWI finish its current job */
+  a6:	06 b6       	in	r0, 0x36	; 54
+  a8:	07 fe       	sbrs	r0, 7
+  aa:	fd cf       	rjmp	.-6      	; 0xa6 <I2C_Slave_Receive+0x4>
+	status=TWSR&0xF8;		/* Read TWI status register */
+  ac:	81 b1       	in	r24, 0x01	; 1
+	if(status==0x80||status==0x90)/* Check for data received &ack returned */
+  ae:	98 2f       	mov	r25, r24
+  b0:	98 7e       	andi	r25, 0xE8	; 232
+  b2:	90 38       	cpi	r25, 0x80	; 128
+  b4:	11 f4       	brne	.+4      	; 0xba <I2C_Slave_Receive+0x18>
+	return TWDR;		/* If yes then return received data */
+  b6:	83 b1       	in	r24, 0x03	; 3
+  b8:	08 95       	ret
+
+	/* Check for data received, nack returned & switched to not addressed slave mode */
+	if(status==0x88||status==0x98)
+  ba:	98 38       	cpi	r25, 0x88	; 136
+  bc:	11 f4       	brne	.+4      	; 0xc2 <I2C_Slave_Receive+0x20>
+	return TWDR;		/* If yes then return received data */
+  be:	83 b1       	in	r24, 0x03	; 3
+  c0:	08 95       	ret
+	if(status==0xA0)		/* Check wether STOP/REPEATED START */
+  c2:	88 7f       	andi	r24, 0xF8	; 248
+  c4:	80 3a       	cpi	r24, 0xA0	; 160
+  c6:	29 f4       	brne	.+10     	; 0xd2 <I2C_Slave_Receive+0x30>
+	{
+		TWCR|=(1<<TWINT);	/* Clear interrupt flag & return -1 */
+  c8:	86 b7       	in	r24, 0x36	; 54
+  ca:	80 68       	ori	r24, 0x80	; 128
+  cc:	86 bf       	out	0x36, r24	; 54
+		return -1;
+  ce:	8f ef       	ldi	r24, 0xFF	; 255
+  d0:	08 95       	ret
+	}
+	else
+	return -2;			/* Else return -2 */
+  d2:	8e ef       	ldi	r24, 0xFE	; 254
+  d4:	08 95       	ret
+
+000000d6 <UART_Init>:
+	UCSRB |=(1<<RXCIE);   // enable RX Interrupt
+}
+
+void UART_Interrupt_Disable(void)
+{
+	UCSRB &=~(1<<RXCIE);   // Disable RX Interrupt
+  d6:	92 e0       	ldi	r25, 0x02	; 2
+  d8:	9b b9       	out	0x0b, r25	; 11
+  da:	98 e1       	ldi	r25, 0x18	; 24
+  dc:	9a b9       	out	0x0a, r25	; 10
+  de:	90 e8       	ldi	r25, 0x80	; 128
+  e0:	90 bd       	out	0x20, r25	; 32
+  e2:	20 b5       	in	r18, 0x20	; 32
+  e4:	30 b5       	in	r19, 0x20	; 32
+  e6:	2f 74       	andi	r18, 0x4F	; 79
+  e8:	20 68       	ori	r18, 0x80	; 128
+  ea:	e0 e1       	ldi	r30, 0x10	; 16
+  ec:	8e 9f       	mul	r24, r30
+  ee:	c0 01       	movw	r24, r0
+  f0:	11 24       	eor	r1, r1
+  f2:	82 2b       	or	r24, r18
+  f4:	83 2b       	or	r24, r19
+  f6:	80 bd       	out	0x20, r24	; 32
+  f8:	80 b5       	in	r24, 0x20	; 32
+  fa:	86 68       	ori	r24, 0x86	; 134
+  fc:	80 bd       	out	0x20, r24	; 32
+  fe:	db 01       	movw	r26, r22
+ 100:	ca 01       	movw	r24, r20
+ 102:	88 0f       	add	r24, r24
+ 104:	99 1f       	adc	r25, r25
+ 106:	aa 1f       	adc	r26, r26
+ 108:	bb 1f       	adc	r27, r27
+ 10a:	88 0f       	add	r24, r24
+ 10c:	99 1f       	adc	r25, r25
+ 10e:	aa 1f       	adc	r26, r26
+ 110:	bb 1f       	adc	r27, r27
+ 112:	9c 01       	movw	r18, r24
+ 114:	ad 01       	movw	r20, r26
+ 116:	22 0f       	add	r18, r18
+ 118:	33 1f       	adc	r19, r19
+ 11a:	44 1f       	adc	r20, r20
+ 11c:	55 1f       	adc	r21, r21
+ 11e:	60 e4       	ldi	r22, 0x40	; 64
+ 120:	72 e4       	ldi	r23, 0x42	; 66
+ 122:	8f e0       	ldi	r24, 0x0F	; 15
+ 124:	90 e0       	ldi	r25, 0x00	; 0
+ 126:	0e 94 ec 00 	call	0x1d8	; 0x1d8 <__udivmodsi4>
+ 12a:	21 50       	subi	r18, 0x01	; 1
+ 12c:	31 09       	sbc	r19, r1
+ 12e:	30 bd       	out	0x20, r19	; 32
+ 130:	29 b9       	out	0x09, r18	; 9
+ 132:	08 95       	ret
+
+00000134 <UART_Initialize>:
+ 134:	fc 01       	movw	r30, r24
+ 136:	84 81       	ldd	r24, Z+4	; 0x04
+ 138:	88 23       	and	r24, r24
+ 13a:	19 f0       	breq	.+6      	; 0x142 <UART_Initialize+0xe>
+ 13c:	81 30       	cpi	r24, 0x01	; 1
+ 13e:	49 f0       	breq	.+18     	; 0x152 <UART_Initialize+0x1e>
+ 140:	08 95       	ret
+ 142:	40 81       	ld	r20, Z
+ 144:	51 81       	ldd	r21, Z+1	; 0x01
+ 146:	62 81       	ldd	r22, Z+2	; 0x02
+ 148:	73 81       	ldd	r23, Z+3	; 0x03
+ 14a:	85 81       	ldd	r24, Z+5	; 0x05
+ 14c:	0e 94 6b 00 	call	0xd6	; 0xd6 <UART_Init>
+ 150:	08 95       	ret
+ 152:	40 81       	ld	r20, Z
+ 154:	51 81       	ldd	r21, Z+1	; 0x01
+ 156:	62 81       	ldd	r22, Z+2	; 0x02
+ 158:	73 81       	ldd	r23, Z+3	; 0x03
+ 15a:	85 81       	ldd	r24, Z+5	; 0x05
+ 15c:	0e 94 6b 00 	call	0xd6	; 0xd6 <UART_Init>
+ 160:	57 9a       	sbi	0x0a, 7	; 10
+ 162:	08 95       	ret
+
+00000164 <UART_TX>:
+
+
+void UART_TX( unsigned char data )
+{
+	/* Wait for empty transmit buffer*/
+	while( !( UCSRA & (1<< UDRE)) ) ;
+ 164:	5d 9b       	sbis	0x0b, 5	; 11
+ 166:	fe cf       	rjmp	.-4      	; 0x164 <UART_TX>
+
+	/* Put data into buffer, sends the data*/
+	UDR = data ;
+ 168:	8c b9       	out	0x0c, r24	; 12
+ 16a:	08 95       	ret
+
+0000016c <main>:
+#include "BAKR_UART.h"
+
+
+
+int main(void)
+{
+ 16c:	cf 93       	push	r28
+ 16e:	df 93       	push	r29
+ 170:	00 d0       	rcall	.+0      	; 0x172 <main+0x6>
+ 172:	00 d0       	rcall	.+0      	; 0x174 <main+0x8>
+ 174:	00 d0       	rcall	.+0      	; 0x176 <main+0xa>
+ 176:	cd b7       	in	r28, 0x3d	; 61
+ 178:	de b7       	in	r29, 0x3e	; 62
+		UART_CONFIG config = {UART_BR_9600,UART_POLLING,NO_PARITY} ; 
+ 17a:	80 e8       	ldi	r24, 0x80	; 128
+ 17c:	95 e2       	ldi	r25, 0x25	; 37
+ 17e:	a0 e0       	ldi	r26, 0x00	; 0
+ 180:	b0 e0       	ldi	r27, 0x00	; 0
+ 182:	89 83       	std	Y+1, r24	; 0x01
+ 184:	9a 83       	std	Y+2, r25	; 0x02
+ 186:	ab 83       	std	Y+3, r26	; 0x03
+ 188:	bc 83       	std	Y+4, r27	; 0x04
+ 18a:	1d 82       	std	Y+5, r1	; 0x05
+ 18c:	1e 82       	std	Y+6, r1	; 0x06
+		
+		
+//	I2C_Init(0x20); 
+I2C_Slave_Init(0xC0);
+ 18e:	80 ec       	ldi	r24, 0xC0	; 192
+ 190:	0e 94 36 00 	call	0x6c	; 0x6c <I2C_Slave_Init>
+	UART_Initialize(&config);
+ 194:	ce 01       	movw	r24, r28
+ 196:	01 96       	adiw	r24, 0x01	; 1
+ 198:	0e 94 9a 00 	call	0x134	; 0x134 <UART_Initialize>
+	char *ptr = malloc(10); 
+  char x,y ; 
+  
+    while (1) 
+    {
+	UART_TX('y');
+ 19c:	89 e7       	ldi	r24, 0x79	; 121
+ 19e:	0e 94 b2 00 	call	0x164	; 0x164 <UART_TX>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 1a2:	87 ea       	ldi	r24, 0xA7	; 167
+ 1a4:	91 e6       	ldi	r25, 0x61	; 97
+ 1a6:	01 97       	sbiw	r24, 0x01	; 1
+ 1a8:	f1 f7       	brne	.-4      	; 0x1a6 <main+0x3a>
+ 1aa:	00 c0       	rjmp	.+0      	; 0x1ac <main+0x40>
+ 1ac:	00 00       	nop
+	_delay_ms(100);
+		switch(I2C_Slave_Listen())	/* Check for SLA+W or SLA+R */
+ 1ae:	0e 94 3a 00 	call	0x74	; 0x74 <I2C_Slave_Listen>
+ 1b2:	81 11       	cpse	r24, r1
+ 1b4:	f3 cf       	rjmp	.-26     	; 0x19c <main+0x30>
+			{
+		case 0:{
+			x =	I2C_Slave_Receive();
+ 1b6:	0e 94 51 00 	call	0xa2	; 0xa2 <I2C_Slave_Receive>
+ 1ba:	e7 ea       	ldi	r30, 0xA7	; 167
+ 1bc:	f1 e6       	ldi	r31, 0x61	; 97
+ 1be:	31 97       	sbiw	r30, 0x01	; 1
+ 1c0:	f1 f7       	brne	.-4      	; 0x1be <main+0x52>
+ 1c2:	00 c0       	rjmp	.+0      	; 0x1c4 <main+0x58>
+ 1c4:	00 00       	nop
+			_delay_ms(100);
+			UART_TX(x);
+ 1c6:	0e 94 b2 00 	call	0x164	; 0x164 <UART_TX>
+ 1ca:	87 ea       	ldi	r24, 0xA7	; 167
+ 1cc:	91 e6       	ldi	r25, 0x61	; 97
+ 1ce:	01 97       	sbiw	r24, 0x01	; 1
+ 1d0:	f1 f7       	brne	.-4      	; 0x1ce <main+0x62>
+ 1d2:	00 c0       	rjmp	.+0      	; 0x1d4 <main+0x68>
+ 1d4:	00 00       	nop
+ 1d6:	e2 cf       	rjmp	.-60     	; 0x19c <main+0x30>
+
+000001d8 <__udivmodsi4>:
+ 1d8:	a1 e2       	ldi	r26, 0x21	; 33
+ 1da:	1a 2e       	mov	r1, r26
+ 1dc:	aa 1b       	sub	r26, r26
+ 1de:	bb 1b       	sub	r27, r27
+ 1e0:	fd 01       	movw	r30, r26
+ 1e2:	0d c0       	rjmp	.+26     	; 0x1fe <__udivmodsi4_ep>
+
+000001e4 <__udivmodsi4_loop>:
+ 1e4:	aa 1f       	adc	r26, r26
+ 1e6:	bb 1f       	adc	r27, r27
+ 1e8:	ee 1f       	adc	r30, r30
+ 1ea:	ff 1f       	adc	r31, r31
+ 1ec:	a2 17       	cp	r26, r18
+ 1ee:	b3 07       	cpc	r27, r19
+ 1f0:	e4 07       	cpc	r30, r20
+ 1f2:	f5 07       	cpc	r31, r21
+ 1f4:	20 f0       	brcs	.+8      	; 0x1fe <__udivmodsi4_ep>
+ 1f6:	a2 1b       	sub	r26, r18
+ 1f8:	b3 0b       	sbc	r27, r19
+ 1fa:	e4 0b       	sbc	r30, r20
+ 1fc:	f5 0b       	sbc	r31, r21
+
+000001fe <__udivmodsi4_ep>:
+ 1fe:	66 1f       	adc	r22, r22
+ 200:	77 1f       	adc	r23, r23
+ 202:	88 1f       	adc	r24, r24
+ 204:	99 1f       	adc	r25, r25
+ 206:	1a 94       	dec	r1
+ 208:	69 f7       	brne	.-38     	; 0x1e4 <__udivmodsi4_loop>
+ 20a:	60 95       	com	r22
+ 20c:	70 95       	com	r23
+ 20e:	80 95       	com	r24
+ 210:	90 95       	com	r25
+ 212:	9b 01       	movw	r18, r22
+ 214:	ac 01       	movw	r20, r24
+ 216:	bd 01       	movw	r22, r26
+ 218:	cf 01       	movw	r24, r30
+ 21a:	08 95       	ret
+
+0000021c <_exit>:
+ 21c:	f8 94       	cli
+
+0000021e <__stop_program>:
+ 21e:	ff cf       	rjmp	.-2      	; 0x21e <__stop_program>
